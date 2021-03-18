@@ -1,0 +1,32 @@
+{
+  "name": "uworld.js-1",
+  "version": "1.0.0",
+  "description": "UWorld client-side JavaScript library",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gzh1612/UWORLD.js-1.git"
+  },
+  "keywords": [
+    "uworld.js",
+    "uworld-js"
+  ],
+  "author": "gaozh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gzh1612/UWORLD.js-1/issues"
+  },
+  "homepage": "https://github.com/gzh1612/UWORLD.js-1#readme",
+  "dependencies": {
+    "bip66": "^1.1.5",
+    "blakejs": "^1.1.0",
+    "bs58": "^4.0.1",
+    "randombytes": "^2.1.0",
+    "safe-buffer": "^5.2.1",
+    "tiny-secp256k1": "^1.1.6",
+    "varuint-bitcoin": "^1.1.2"
+  }
+}
