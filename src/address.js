@@ -12,6 +12,7 @@ module.exports = {
     toBase58Check: toBase58Check,
     toOutputScript: toOutputScript,
     toAddress: toAddress,
+    toTokenAddress: toTokenAddress,
 }
 
 function fromBase58Check(address) {
@@ -46,27 +47,62 @@ function toOutputScript(address, network) {
 
 //生成地址
 function toAddress(buff, version) {
-    // const a = Buffer.from(version);
-    // const b = hash.ripemd160(hash.sha256(buff));
-    //
-    // const ubc = Buffer.concat([
-    //     Buffer.from(version),
-    //     hash.ripemd160(hash.sha256(buff))
-    // ]);
-    // const checkSum = hash.sha256((hash.sha256(ubc))).slice(0, 4);
-    // return base58.encode(Buffer.concat([ubc, checkSum]));
-
-
-    let a;
-    if (version === 'TN') a = Buffer.from([0x0f, 0x89]);
-    else if (version === 'MN') a = Buffer.from([0x0f, 0x4e]);
-
-    const b = hash.ripemd160(hash.sha256(buff));
-
+    let topHash;
+    if (version === 'TN') topHash = Buffer.from([0x03, 0x82, 0x32]);
+    else if (version === 'MN') topHash = Buffer.from([0x03, 0x82, 0x32]);
     const buf = Buffer.concat([
-        a,
+        topHash,
         hash.ripemd160(hash.sha256(buff))
     ]);
     const checkSum = hash.sha256((hash.sha256(buf))).slice(0, 4);
     return base58.encode(Buffer.concat([buf, checkSum]))
 }
+
+/**
+ * 生成token地址
+ * @param address           发币地址
+ * @param shorthand         币的简写
+ * @param network           网络
+ * @returns {string}
+ */
+function toTokenAddress(address, shorthand, network) {
+    let topHash;
+    if (network === 'TN') topHash = Buffer.from([0x03, 0x82, 0x55]);
+    else if (network === 'MN') topHash = Buffer.from([0x03, 0x82, 0x55]);
+    console.log('生成token address');
+    let addrByte = base58.decode(address);
+    let shortByte = stringToBytes(shorthand);
+    let concatByte = [];
+    for (let i = 0, len = addrByte.length; i < len; i++) {
+        concatByte.push(addrByte[i]);
+    }
+    for (let i = 0, len = shortByte.length; i < len; i++) {
+        concatByte.push(shortByte[i]);
+    }
+
+    const buf = Buffer.concat([
+        topHash,
+        hash.ripemd160(hash.sha256(Buffer.from(concatByte)))
+    ]);
+    const checkSum = hash.sha256((hash.sha256(buf))).slice(0, 4);
+    return base58.encode(Buffer.concat([buf, checkSum]))
+}
+
+// JS字符串转Byte[]
+const stringToBytes = (str) => {
+    let ch, st, re = [];
+    for (let i = 0; i < str.length; i++) {
+        ch = str.charCodeAt(i);  // get char
+        st = [];                 // set up "stack"
+        do {
+            st.push(ch & 0xFF);  // push byte to stack
+            ch = ch >> 8;          // shift value down by 1 byte
+        }
+        while (ch);
+        // add stack contents to result
+        // done because chars have "wrong" endianness
+        re = re.concat(st.reverse());
+    }
+    // return an array of bytes
+    return re;
+};

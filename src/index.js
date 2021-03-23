@@ -11,6 +11,7 @@ module.exports = {
     address: require('./address'),
     networks: require('./networks'),
     tx: require('./transaction'),
+    tx_v2: require('./transaction_v2'),
     txsign: require('./txsign'),
     // block: require('./block'),
     OPS: _OPS,
