@@ -83,7 +83,7 @@ const sign = (params) => {
     //生成hash
     let txhash = hash.sha256(Buffer.from(encodeUtf8(JSON.stringify(toJson(result)))));
     txhash = `0x${Buffer.from(txhash).toString('hex')}`;
-    console.log('txhash', txhash);
+    // console.log('txhash', txhash);
     //去掉 0x 后转 buffer
     const bufferHash = Buffer.from(txhash.substring(2), 'hex');
     //签名

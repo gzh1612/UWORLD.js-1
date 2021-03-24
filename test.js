@@ -32,7 +32,7 @@ console.log('address', address)
 /**
  * 交易签名
  */
-let nonce = 5;//通过api获取 nonce值
+let nonce = 6;//通过api获取 nonce值
 const params = {
     type: 0,//type:0 交易
     from: address,
@@ -44,9 +44,8 @@ const params = {
     note: '啊啊啊',
 };
 console.log('-----', '交易签名');
-console.log('params', params);
 //发送code到api进行交易
-// const code = UWorld.tx_v2.sign1(params);
+// const code = UWorld.tx_v2.sign(params);
 // console.log('code', code);
 /**
  * 合约发布
@@ -67,32 +66,18 @@ const paramsContract = {
     amount: 10000 * 1e8,
 };
 //发送 contract 到api进行 contract 发布
-const contract = UWorld.tx_v2.sign(paramsContract);
-console.log('-----', '合约发布');
+// const contract = UWorld.tx_v2.sign(paramsContract);
+// console.log('-----', '合约发布');
 // console.log('contract', contract);
 
 
-const fetch = require('node-fetch');
-
-fetch('http://8.210.5.46:5000/api/v1/tx/raw', {
-    method: 'POST',
-    headers: {'content-type': 'application/json'},
-    body: JSON.stringify({raw: JSON.stringify(contract)})
-}).then(res => res.json()).then(res => {
-    console.log(res);
-})
-
-// const http = require('http');
-// http.request({
-//     hostname: 'https://raw.githubusercontent.com',
-//     port: '8080',
-//     path: '/api/v1/tx/raw',
+// const fetch = require('node-fetch');
+//
+// fetch('http://8.210.5.46:5000/api/v1/tx/raw', {
 //     method: 'POST',
-//     headers: {
-//         'content-type': 'application/json'
-//     }
-// }, res => {
-//     res.on('data', chunk => {
-//         console.log('body', chunk)
-//     })
+//     headers: {'content-type': 'application/json'},
+//     body: JSON.stringify({raw: JSON.stringify(contract)})
+// }).then(res => res.json()).then(res => {
+//     console.log(res);
 // })
+
