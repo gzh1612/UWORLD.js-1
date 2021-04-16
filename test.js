@@ -32,44 +32,67 @@ console.log('address', address)
 /**
  * 交易签名
  */
-let nonce = 6;//通过api获取 nonce值
-const params = {
-    type: 0,//type:0 交易
-    from: address,
-    network: UWorld.networks.testnet,
-    privateKey: Buffer.from(privateKey, 'hex'),
-    nonce: nonce + 1,
-    amount: 10 * 1e8,
-    to: 'UWDTx1ABvPaNiXEtbYqGzrjHo9MYFZgZpxSq',//转账地址
-    note: '啊啊啊',
-};
-console.log('-----', '交易签名');
+let nonce = 1;//通过api获取 nonce值
+// const params = {
+//     type: 0,//type:0 交易
+//     from: address,
+//     network: UWorld.networks.testnet,
+//     privateKey: Buffer.from(privateKey, 'hex'),
+//     nonce: nonce + 1,
+//     amount: 10 * 1e8,
+//     contract: 'UWD',
+//     to: 'UWDTx1ABvPaNiXEtbYqGzrjHo9MYFZgZpxSq',//转账地址
+//     note: '啊啊啊',
+// };
+// console.log('-----', '交易签名');
 //发送code到api进行交易
 // const code = UWorld.tx_v2.sign(params);
 // console.log('code', code);
 /**
  * 合约发布
  */
-const paramsContract = {
-    type: 1,
-    network: UWorld.networks.testnet,
-    privateKey: Buffer.from(privateKey, 'hex'),
-    from: address,
-    nonce: nonce + 1,
-    note: '',
-    // receiver: '发送到谁的地址上',
-    receiver: address,
-    // name: '币名称',
-    name: '币名称',
-    // shorthand: '币缩写，全大写',
-    shorthand: 'AAAAA',
-    amount: 10000 * 1e8,
-};
+// const paramsContract = {
+//     type: 1,
+//     network: UWorld.networks.testnet,
+//     privateKey: Buffer.from(privateKey, 'hex'),
+//     from: address,
+//     nonce: nonce + 1,
+//     note: '',
+//     // receiver: '发送到谁的地址上',
+//     receiver: address,
+//     // name: '币名称',
+//     name: '币名称',
+//     // shorthand: '币缩写，全大写',
+//     shorthand: 'AAAAA',
+//     amount: 10000 * 1e8,
+// };
 //发送 contract 到api进行 contract 发布
 // const contract = UWorld.tx_v2.sign(paramsContract);
 // console.log('-----', '合约发布');
 // console.log('contract', contract);
 
+/**
+ * 发送 1 对 多 交易
+ */
+const params = {
+    type: 3,//type:3 1对多交易
+    from: address,
+    network: UWorld.networks.testnet,
+    privateKey: Buffer.from(privateKey, 'hex'),
+    nonce: nonce + 1,
+    contract: 'UWTLNg4GFYgVNsPFUEWyAywsgbmQ8JrAFWHP',
+    receivers: [{
+        address: 'UWDTx1ABvPaNiXEtbYqGzrjHo9MYFZgZpxSq',
+        amount: 10 * 1e8
+    }, {
+        address: address,
+        amount: 9 * 1e8
+    }],
+    note: 'a安达市',
+};
+const contract = UWorld.tx_v2.sign(params);
+console.log('-----', '1对多交易');
+console.log('contract', contract);
 
 // const fetch = require('node-fetch');
 //
@@ -79,5 +102,7 @@ const paramsContract = {
 //     body: JSON.stringify({raw: JSON.stringify(contract)})
 // }).then(res => res.json()).then(res => {
 //     console.log(res);
+// }).catch(err => {
+//     console.log(err);
 // })
 

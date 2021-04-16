@@ -34,7 +34,15 @@ const getTimeStamp = () => {
 };
 
 
-//交易 json
+/**
+ * 交易 json
+ * type 交易类型
+ *     0：1对1交易
+ *     1：发布token
+ *     3：1对多交易
+ * @param params
+ * @returns {{txhead: {note: string|*, fees: number, signscript: {signature: string|*, pubkey: string|*|string}, from: *, time: number, txtype: number|*, nonce: *, txhash: string|string|*}}}
+ */
 const toJson = (params) => {
     if (!params) params = {};
     let json = {
@@ -72,7 +80,13 @@ const toJson = (params) => {
             increase: false,                    //是否支持增发
             amount: params.amount,              //金额
         };
+    } else if (params.type === 3) {
+        json.txbody = {
+            contract: params.contract === undefined ? 'UWD' : params.contract,
+            receivers: params.receivers,
+        };
     }
+
     return json
 };
 
